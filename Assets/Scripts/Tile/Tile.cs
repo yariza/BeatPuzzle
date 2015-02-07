@@ -53,13 +53,29 @@ public class Tile : MonoBehaviour {
         color = colorIndex;
     }
 
+    public GameObject lightObj;
+    private float flashIntensity = 5.3f;
+
+    public void Flash() {
+        lightObj.light.intensity = flashIntensity;
+        Color c = ColorManager.Instance.GetColorForIndex(color);
+        lightObj.light.color = Color.Lerp(c, Color.white, 0.7f);
+    }
+
     // Use this for initialization
-    void Start () {
-        
+    public virtual void Start () {
+        lightObj = new GameObject();
+        lightObj.AddComponent<Light>();
+        lightObj.light.intensity = 0;
+        lightObj.transform.parent = transform;
+        lightObj.transform.localPosition = new Vector3(0, 0, -0.5f);
     }
     
     // Update is called once per frame
-    void Update () {
-    
+    public virtual void Update () {
+        float intensity = lightObj.light.intensity;
+        if (intensity > 0.2f) {
+            lightObj.light.intensity = intensity - 0.4f;
+        }
     }
 }

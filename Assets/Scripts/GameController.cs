@@ -93,6 +93,7 @@ public class GameController : Singleton<GameController> {
                 Tile t = grid.tiles[b.x,b.y];
                 if (t != null) {
                     b.velocity = t.ResultingDirection(b.velocity);
+                    t.Flash();
                 }
             }
         }
