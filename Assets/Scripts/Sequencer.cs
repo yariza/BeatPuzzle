@@ -22,8 +22,10 @@ public class Sequencer : MonoBehaviour {
         for (int i = 1; i < lines.Length; i++) {
             char[] instrument = lines[i].Trim().ToCharArray();
 
+            // Seriously I don't get why there's an extra line
             if (instrument.Length != measureLength) {
                 Debug.Log("Instrument " + i + " in sequence doesn't match measure length!");
+                continue;
             }
 
             for (int j = 0; j < measureLength; j++) {
@@ -45,10 +47,29 @@ public class Sequencer : MonoBehaviour {
         }
     }
 
+    /* Returns the 0-indexed number of a hit
+     * color: index in ColorManager
+     * frame: frame index
+     */
+    int numHits(int color, int frame) {
+        int hits = 0;
+        if (measure[color, frame] == false) {
+            return -1;
+        } else {
+            for (int i = 0; i <= frame; i++) {
+                if (measure[color, i] == true) {
+                    hits += 1;
+                }
+            }
+            return hits - 1;
+        }
+    }
+
     // Use this for initialization
     void Start () {
         cs = ColorManager.Instance;
         fromFile();
+        Debug.Log(numHits(0, 4));
     }
     
     // Update is called once per frame
