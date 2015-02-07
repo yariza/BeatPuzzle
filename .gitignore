@@ -24,3 +24,6 @@ sysinfo.txt
 .gitignore
 *.swp
 *.*~
+
+# Yujin
+*.sublime-workspace
