@@ -61,7 +61,8 @@ public class Grid : Singleton<Grid> {
 						break;
 
 					default:
-						tile = Instantiate(reflectPrefab) as GameObject;
+                        Debug.Log("Tile type not recognized at line " + i);
+                        tile = null;
 						break;
 				}
 
