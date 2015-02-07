@@ -15,7 +15,7 @@ public class Grid : Singleton<Grid> {
 	Tile[,] tiles;
 	int sizeX, sizeY;
 
-	void fromFile() {
+    void fromFile() {
 		string levelText = level.text;
 		string[] lines = levelText.Split(new char[] {'\n'});
 		string[] dimensions = lines[0].Split(new char[] {','});
@@ -37,7 +37,7 @@ public class Grid : Singleton<Grid> {
 
 			// For some reason, split is giving empty elements
 			if (values.Length != 5) {
-				break;
+				continue;
 			}
 
 			int x = int.Parse(values[0].Trim());
@@ -61,7 +61,8 @@ public class Grid : Singleton<Grid> {
 						break;
 
 					default:
-						tile = Instantiate(reflectPrefab) as GameObject;
+                        Debug.Log("Tile type not recognized at line " + i);
+                        tile = null;
 						break;
 				}
 

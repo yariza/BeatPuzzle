@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ColorManager : Singleton<ColorManager> {
 
+    public int numColors = 5;
+
     Color GetColorForIndex(int index) {
         switch (index) {
             case 0: return Color.cyan;
