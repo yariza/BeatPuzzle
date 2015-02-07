@@ -42,7 +42,7 @@ public class Ball : MonoBehaviour {
     }
 
     private void SetPositions() {
-        transform.localPosition = Grid.Instance.GetLocalPositionFromCoord(xPos, yPos);
+        transform.localPosition = Grid.Instance.GetLocalPositionFromCoord(xPos, yPos, 1);
     }
 
     // Use this for initialization

@@ -18,12 +18,34 @@ public class Grid : Singleton<Grid> {
 	public Tile[,] tiles;
 	public int sizeX, sizeY;
 
-	public Vector3 GetLocalPositionFromCoord(int x, int y) {
-		return new Vector3(x*tileScaleX, y*tileScaleY, 2);
+	public Vector3 GetLocalPositionFromCoord(int x, int y, float z) {
+		return new Vector3(x*tileScaleX, y*tileScaleY, z);
 	}
 
-	public Vector3 GetGlobalPositionFromCoord(int x, int y) {
-		return transform.TransformPoint(GetLocalPositionFromCoord(x, y));
+	public Vector3 GetGlobalPositionFromCoord(int x, int y, float z) {
+		return transform.TransformPoint(GetLocalPositionFromCoord(x, y, z));
+	}
+
+	public int GetXCoordFromLocalPosition(Vector3 pos) {
+		int x = (int)(pos.x / tileScaleX + 0.5f);
+		if (x < 0) return 0;
+		if (x >= sizeX) return sizeX-1;
+		return x;
+	}
+
+	public int GetXCoordFromGlobalPosition(Vector3 pos) {
+		return GetXCoordFromLocalPosition(transform.InverseTransformPoint(pos));
+	}
+
+	public int GetYCoordFromLocalPosition(Vector3 pos) {
+		int y = (int)(pos.y / tileScaleY + 0.5f);
+		if (y < 0) return 0;
+		if (y >= sizeY) return sizeY-1;
+		return y;
+	}
+
+	public int GetYCoordFromGlobalPosition(Vector3 pos) {
+		return GetYCoordFromLocalPosition(transform.InverseTransformPoint(pos));
 	}
 
 	public Vector3 GetLocalGridCenter() {
@@ -97,36 +119,6 @@ public class Grid : Singleton<Grid> {
 				dir.y = int.Parse(values[4].Trim());
 				tileComp.SetDirection(dir);
 
-				// switch (values[3].ToUpper()) {
-				// 	case "N":
-				// 		tileComp.SetOrientation(Tile.Orientation.N);
-				// 		break;
-				// 	case "NW":
-				// 		tileComp.SetOrientation(Tile.Orientation.NW);
-				// 		break;
-				// 	case "W":
-				// 		tileComp.SetOrientation(Tile.Orientation.W);
-				// 		break;
-				// 	case "SW":
-				// 		tileComp.SetOrientation(Tile.Orientation.SW);
-				// 		break;
-				// 	case "S":
-				// 		tileComp.SetOrientation(Tile.Orientation.S);
-				// 		break;
-				// 	case "SE":
-				// 		tileComp.SetOrientation(Tile.Orientation.SE);
-				// 		break;
-				// 	case "E":
-				// 		tileComp.SetOrientation(Tile.Orientation.E);
-				// 		break;
-				// 	case "NE":
-				// 		tileComp.SetOrientation(Tile.Orientation.NE);
-				// 		break;
-				// 	default:
-				// 		Debug.Log("Tile direction not recognized at line " + i);
-				// 		break;
-				// }
-
 				int color = int.Parse(values[5].Trim());
 				tileComp.SetColor(color);
 
@@ -139,8 +131,8 @@ public class Grid : Singleton<Grid> {
 		for (int x = 0; x <= sizeX; x++) {
 				GameObject gridLine = Instantiate(gridLinePrefab) as GameObject;
 				LineRenderer lr = gridLine.GetComponent<LineRenderer>();
-				lr.SetPosition(0, new Vector3((x - 0.5f) * tileScaleX, -0.5f * tileScaleY, 0));
-				lr.SetPosition(1, new Vector3((x - 0.5f) * tileScaleX, (sizeY - 0.5f) * tileScaleY, 0));
+				lr.SetPosition(0, new Vector3((x - 0.5f) * tileScaleX, -0.5f * tileScaleY, 1));
+				lr.SetPosition(1, new Vector3((x - 0.5f) * tileScaleX, (sizeY - 0.5f) * tileScaleY, 1));
 				Transform trans = gridLine.GetComponent<Transform>();
 				trans.parent = transform;
 				trans.localPosition = Vector3.zero;
@@ -149,8 +141,8 @@ public class Grid : Singleton<Grid> {
 		for (int y = 0; y <= sizeY; y++) {
 				GameObject gridLine = Instantiate(gridLinePrefab) as GameObject;
 				LineRenderer lr = gridLine.GetComponent<LineRenderer>();
-				lr.SetPosition(0, new Vector3(-0.5f * tileScaleX, (y - 0.5f) * tileScaleY, 0));
-				lr.SetPosition(1, new Vector3((sizeX - 0.5f) * tileScaleX, (y - 0.5f) * tileScaleY, 0));
+				lr.SetPosition(0, new Vector3(-0.5f * tileScaleX, (y - 0.5f) * tileScaleY, 1));
+				lr.SetPosition(1, new Vector3((sizeX - 0.5f) * tileScaleX, (y - 0.5f) * tileScaleY, 1));
 				Transform trans = gridLine.GetComponent<Transform>();
 				trans.parent = transform;
 				trans.localPosition = Vector3.zero;

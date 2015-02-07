@@ -50,13 +50,13 @@ public class OneWayTile : Tile {
             }
             else if (direction.x / direction.y > 0) {
                 // top-right
-                result.x = incoming.y;
-                result.y = incoming.x;
+                result.x = -incoming.y;
+                result.y = -incoming.x;
             }
             else {
                 // top-left
-                result.x = -incoming.y;
-                result.y = -incoming.x;
+                result.x = incoming.y;
+                result.y = incoming.x;
             }
         }
 

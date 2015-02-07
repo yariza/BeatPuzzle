@@ -48,17 +48,16 @@ public class GameController : Singleton<GameController> {
 
             iTween.MoveTo(b.gameObject,
                 iTween.Hash(
-                    "position", grid.GetGlobalPositionFromCoord(b.x+b.velocity.x, b.y+b.velocity.y),
+                    "position", grid.GetGlobalPositionFromCoord(b.x+b.velocity.x, b.y+b.velocity.y, 1),
                     "easetype", "linear",
                     "time", audiobank.bgLoop.length / sequencer.measureLength));
 
             int nextX = b.x + b.velocity.x;
             int nextY = b.y + b.velocity.y;
-            Tile.Direction dir = b.velocity;
+
             if (currentFrame == sequencer.measureLength-1) {
                 nextX = b.originX;
                 nextY = b.originY;
-                dir = b.originDir;
             }
 
             if (0 <= nextX && nextX < grid.sizeX && 0 <= nextY && nextY < grid.sizeY) {
@@ -101,17 +100,33 @@ public class GameController : Singleton<GameController> {
         moveBalls();
     }
 
+    private Tile selectedTile;
+
+    private void unbindTile(int x, int y) {
+        Tile t = grid.tiles[x,y];
+        if (t != null && t.type != Tile.Type.EMITTER) {
+            selectedTile = t;
+            grid.tiles[x,y] = null;
+        }
+    }
+
+    private void rebindTile(int x, int y) {
+        selectedTile.transform.localPosition = new Vector3(x * grid.tileScaleX, y * grid.tileScaleY, 1);
+        grid.tiles[x,y] = selectedTile;
+        selectedTile = null;
+    }
+
     // Use this for initialization
     void Start () {
         currentFrame = 0;
+        selectedTile = null;
 
         int numEmitters = (FindObjectsOfType(typeof(EmitterTile)) as EmitterTile[]).Length;
         balls = new Ball[numEmitters];
-        Debug.Log(numEmitters + " emitters found");
 
         SetUpBalls();
     }
-    
+
     // Update is called once per frame
     void Update () {
         int newFrame = audiobank.GetFrameIndex(sequencer.measureLength);
@@ -119,5 +134,31 @@ public class GameController : Singleton<GameController> {
             currentFrame = newFrame;
             tick();
         }
+
+        // handle mouse calls
+        if (Input.GetMouseButton(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo)) {
+                Vector3 pos = hitInfo.point;
+                int xCoord = grid.GetXCoordFromGlobalPosition(pos);
+                int yCoord = grid.GetYCoordFromGlobalPosition(pos);
+
+                if (selectedTile == null) {
+                    unbindTile(xCoord, yCoord);
+                }
+
+                if (selectedTile != null) {
+                    float z = selectedTile.transform.position.z;
+                    selectedTile.transform.position = new Vector3(pos.x, pos.y, z);
+                }
+            }
+        }
+        else if (selectedTile != null) {
+            int xCoord = grid.GetXCoordFromGlobalPosition(selectedTile.transform.position);
+            int yCoord = grid.GetYCoordFromGlobalPosition(selectedTile.transform.position);
+            rebindTile(xCoord, yCoord);
+        }
+
     }
 }
