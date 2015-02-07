@@ -101,6 +101,7 @@ public class GameController : Singleton<GameController> {
     }
 
     private Tile selectedTile;
+    private int originalX, originalY;
 
     private void unbindTile(int x, int y) {
         Tile t = grid.tiles[x,y];
@@ -146,6 +147,8 @@ public class GameController : Singleton<GameController> {
 
                 if (selectedTile == null) {
                     unbindTile(xCoord, yCoord);
+                    originalX = xCoord;
+                    originalY = yCoord;
                 }
 
                 if (selectedTile != null) {
@@ -157,7 +160,11 @@ public class GameController : Singleton<GameController> {
         else if (selectedTile != null) {
             int xCoord = grid.GetXCoordFromGlobalPosition(selectedTile.transform.position);
             int yCoord = grid.GetYCoordFromGlobalPosition(selectedTile.transform.position);
-            rebindTile(xCoord, yCoord);
+            if (grid.tiles[xCoord, yCoord] == null) {
+                rebindTile(xCoord, yCoord);
+            } else {
+                rebindTile(originalX, originalY);
+            }
         }
 
     }
