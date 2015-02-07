@@ -10,10 +10,10 @@ public class Audiobank : Singleton<Audiobank> {
         return (int)((1.0 * audio.timeSamples) * numFrames / audio.clip.samples);
     }
 
-    public void PlayHit(int frameIndex, int numFrames, int instrIndex, int soundIndex) {
+    public void PlayHit(int frameIndex, int numFrames, int instrIndex, int countIndex) {
         // sound index is which sound within Instrument to play (count hits played so far)
         double time = GetNextDSPTime(frameIndex, numFrames);
-        instruments[instrIndex].PlayHit(time, soundIndex);
+        instruments[instrIndex].PlayHit(time, countIndex);
     }
 
     private double GetNextDSPTime(int frameIndex, int numFrames) {

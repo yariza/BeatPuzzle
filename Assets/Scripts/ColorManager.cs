@@ -5,7 +5,7 @@ public class ColorManager : Singleton<ColorManager> {
 
     public int numColors = 5;
 
-    Color GetColorForIndex(int index) {
+    public Color GetColorForIndex(int index) {
         switch (index) {
             case 0: return Color.cyan;
             case 1: return Color.red;

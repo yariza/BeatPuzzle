@@ -9,7 +9,7 @@ public class Instrument : MonoBehaviour {
     private AudioSource[] sources;
 
     public void PlayHit(double time, int index) {
-        AudioSource source = sources[index];
+        AudioSource source = sources[index % sounds.Length];
         source.PlayScheduled(time);
     }
 

@@ -5,8 +5,8 @@ public class Sequencer : MonoBehaviour {
 
     public TextAsset sequence;
 
-    int measureLength;
-    bool[,] measure;
+    public int measureLength;
+    public bool[,] measure;
     ColorManager cs;
 
     void fromFile() {
@@ -51,7 +51,7 @@ public class Sequencer : MonoBehaviour {
      * color: index in ColorManager
      * frame: frame index
      */
-    int numHits(int color, int frame) {
+    public int numHits(int color, int frame) {
         int hits = 0;
         if (measure[color, frame] == false) {
             return -1;
