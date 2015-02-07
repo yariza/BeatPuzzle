@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour {
     }
 
     public GameObject lightObj;
-    private float flashIntensity = 5.3f;
+    private float flashIntensity = 2.3f;
 
     public void Flash() {
         lightObj.light.intensity = flashIntensity;
@@ -75,7 +75,7 @@ public class Tile : MonoBehaviour {
     public virtual void Update () {
         float intensity = lightObj.light.intensity;
         if (intensity > 0.2f) {
-            lightObj.light.intensity = intensity - 0.4f;
+            lightObj.light.intensity = intensity - 0.2f;
         }
     }
 }
