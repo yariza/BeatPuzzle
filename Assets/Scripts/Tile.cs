@@ -3,7 +3,11 @@ using System.Collections;
 
 public class Tile : MonoBehaviour {
 
-	enum Type {REFLECT, PASS, ONE_WAY}
+	public static GameObject reflectPrefab;
+	public static GameObject passPrefab;
+	public static GameObject oneWayPrefab;
+
+	enum Type {REFLECT, PASS, ONEWAY}
 	enum Orientation {N, NE, E, SE, S, SW, W, NW};
 
 	Type type;
