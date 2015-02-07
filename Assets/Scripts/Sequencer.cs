@@ -69,7 +69,6 @@ public class Sequencer : MonoBehaviour {
     void Start () {
         cs = ColorManager.Instance;
         fromFile();
-        Debug.Log(numHits(0, 4));
     }
     
     // Update is called once per frame
