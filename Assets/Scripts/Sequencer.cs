@@ -14,7 +14,7 @@ public class Sequencer : MonoBehaviour {
 		string[] lines = sequenceText.Split(new char[] {'\n'});
         measureLength = int.Parse(lines[0]);
         if (lines.Length != cs.numColors + 1) {
-            Debug.Log("Wrong number of instruments!" + measureLength);
+            Debug.Log("Wrong number of instruments! " + lines.Length);
         }
 
         measure = new bool[cs.numColors, measureLength];
