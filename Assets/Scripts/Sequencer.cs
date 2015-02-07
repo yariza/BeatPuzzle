@@ -7,16 +7,20 @@ public class Sequencer : MonoBehaviour {
 
     int measureLength;
     bool[,] measure;
+    ColorManager cs;
 
     void fromFile() {
 		string sequenceText = sequence.text;
 		string[] lines = sequenceText.Split(new char[] {'\n'});
         measureLength = int.Parse(lines[0]);
+        if (lines.Length != cs.numColors + 1) {
+            Debug.Log("Wrong number of instruments!" + measureLength);
+        }
 
-        measure = new bool[8, measureLength];
+        measure = new bool[cs.numColors, measureLength];
 
         for (int i = 1; i < lines.Length; i++) {
-            char[] instrument = lines[i].ToCharArray();
+            char[] instrument = lines[i].Trim().ToCharArray();
 
             if (instrument.Length != measureLength) {
                 Debug.Log("Instrument " + i + " in sequence doesn't match measure length!");
@@ -43,7 +47,8 @@ public class Sequencer : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-    
+        cs = ColorManager.Instance;
+        fromFile();
     }
     
     // Update is called once per frame
